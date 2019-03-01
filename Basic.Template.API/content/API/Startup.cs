@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using StructureMap;
 
 namespace API
 {
@@ -14,7 +12,7 @@ namespace API
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
             {
@@ -23,7 +21,24 @@ namespace API
                 c.DescribeAllEnumsAsStrings();
             });
             services.AddMvc();
-            //.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
+            //StructureMap Container
+            var container = new Container();
+
+            container.Configure(config =>
+            {
+                config.Scan(_ =>
+                {
+                    // Registering to allow for Interfaces to be dynamically mapped
+                    _.AssemblyContainingType(typeof(Startup));
+                    //List assemblys here
+                    _.Assembly("Algorithms");
+                    _.WithDefaultConventions();
+                });
+                config.Populate(services);
+            });
+            
+            return container.GetInstance<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,7 +48,6 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
-            
             
             app.UseSwagger();
             

@@ -19,3 +19,8 @@ Run the command below from the root of the project with the sln file
 
 ### Finally create a new project using the dotnet new syntax
 ```dotnet new Basic.API.Template```
+
+### Project 
+Includes swagger enabled by default @ http://RootURL/swagger/v1/swagger.json
+
+Includes assembly scanning for dependency injection

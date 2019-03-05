@@ -7,6 +7,11 @@ namespace API.Controllers
     public class SampleController : Controller
         {
 
+            /// <summary>
+            ///     A sample controller route
+            /// </summary>
+            /// <param name="portfolioPolicy"></param>
+            /// <returns></returns>
             [HttpGet]
             [Route("")]
             [ProducesResponseType(200)]

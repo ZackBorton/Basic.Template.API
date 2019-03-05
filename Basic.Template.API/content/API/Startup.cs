@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,7 @@ namespace API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
                 
                 c.DescribeAllEnumsAsStrings();
+                c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"API.xml"));
             });
             services.AddMvc();
             
@@ -32,7 +34,9 @@ namespace API
                     // Registering to allow for Interfaces to be dynamically mapped
                     _.AssemblyContainingType(typeof(Startup));
                     //List assemblys here
-                    _.Assembly("Algorithms");
+                    _.Assembly("API");
+                    _.Assembly("Logic");
+                    _.Assembly("Models");
                     _.WithDefaultConventions();
                 });
                 config.Populate(services);

@@ -4,6 +4,7 @@
         <TargetFramework>netcoreapp2.2</TargetFramework>
         <AspNetCoreHostingModel>inprocess</AspNetCoreHostingModel>
         <IsPackable>true</IsPackable>
+        <DocumentationFile>API.xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.App" />

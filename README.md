@@ -18,6 +18,10 @@ Example
 ### Finally create a new project using the dotnet new syntax
 ```dotnet new Basic.API.Template```
 
+To note you can specifiy a new name for the project being created
+
+```dotnet new Basic.API.Template --name NewAppName```
+
 ### Uninstalling
 You need to supply the full path to the unintall
 

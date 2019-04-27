@@ -9,16 +9,11 @@ Should be 2.2.0 or higher if its not install the latest stable version
 
 ``` dotnet --version```
 
-### If this is local use the directory containing the .template.config folder
-dotnet new -i FullPathToConfig
+### If this is a local project use the directory containing the .template.config folder
+```dotnet new -i FullPathToConfig```
 
-### Create a nuget file if you plan on sharing the template
-Run the command below from the root of the project with the sln file
-
-```dotnet pack```
-
-### Now import your template file
-```dotnet new -i YourNewNugetFile.nupkg``` 
+Example 
+```dotnet new -i "PathToYourProject/Basic.Template.API/Basic.Template.API/content/"```
 
 ### Finally create a new project using the dotnet new syntax
 ```dotnet new Basic.API.Template```

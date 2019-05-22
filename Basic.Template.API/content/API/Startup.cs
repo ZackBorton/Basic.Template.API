@@ -53,6 +53,10 @@ namespace API
                 app.UseDeveloperExceptionPage();
             }
             
+            // Enforces the HTTP Strict Transport Security, which forces all communication over https
+            // It also enforces the browser to disallow a user from using untrusted or invalid certificates
+            app.UseHsts();
+            
             app.UseSwagger();
             
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1"); });

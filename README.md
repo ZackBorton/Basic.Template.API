@@ -38,3 +38,7 @@ If you have issues uninstalling try running the below command
 Includes swagger enabled by default @ http://RootURL/swagger/v1/swagger.json
 
 Includes assembly scanning for dependency injection
+
+Includes enforced HSTS security
+
+Includes API versioning example

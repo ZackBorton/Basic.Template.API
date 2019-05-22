@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace API.Controllers.V2
 {
-    [Route("api/[controller]")]
+    [Route("api/v2/[controller]")]
+    [ApiController]
+    [ApiVersion( "2.0" )]
     public class SampleController : Controller
         {
 
@@ -12,6 +14,7 @@ namespace API.Controllers
             /// </summary>
             /// <param name="portfolioPolicy"></param>
             /// <returns></returns>
+            
             [HttpGet]
             [Route("")]
             [ProducesResponseType(200)]

@@ -18,11 +18,30 @@ namespace API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                // Versioned API Example
+                c.SwaggerDoc("v2", new OpenApiInfo { Title = "My API", Version = "v2" });
                 
                 c.DescribeAllEnumsAsStrings();
                 c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"API.xml"));
             });
             services.AddMvc();
+            services.AddApiVersioning(
+                options =>
+                {
+                    // reporting api versions will return the headers "api-supported-versions" and "api-deprecated-versions"
+                    options.ReportApiVersions = true;
+                } );
+            services.AddVersionedApiExplorer(
+                options =>
+                {
+                    // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
+                    // note: the specified format code will format the version as "'v'major[.minor][-status]"
+                    options.GroupNameFormat = "'v'VVV";
+
+                    // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
+                    // can also be used to control the format of the API version in route templates
+                    options.SubstituteApiVersionInUrl = true;
+                } );
             
             //StructureMap Container
             var container = new Container();
@@ -59,7 +78,11 @@ namespace API
             
             app.UseSwagger();
             
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1"); });
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "API V2");
+            });
             
             app.UseMvc(routes =>
             {

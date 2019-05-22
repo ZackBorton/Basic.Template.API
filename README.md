@@ -9,16 +9,26 @@ Should be 2.2.0 or higher if its not install the latest stable version
 
 ``` dotnet --version```
 
-### Create a nuget file
-Run the command below from the root of the project with the sln file
+### If this is a local project use the directory containing the .template.config folder
+```dotnet new -i FullPathToConfig```
 
-```dotnet pack```
-
-### Now import your template file
-```dotnet new -i YourNewNugetFile.nupkg``` 
+Example 
+```dotnet new -i "PathToYourProject/Basic.Template.API/Basic.Template.API/content/"```
 
 ### Finally create a new project using the dotnet new syntax
 ```dotnet new Basic.API.Template```
+
+To note you can specifiy a new name for the project being created
+
+```dotnet new Basic.API.Template --name NewAppName```
+
+### Uninstalling
+You need to supply the full path to the unintall
+
+### Issues uninstalling
+If you have issues uninstalling try running the below command
+
+```dotnet new --debug:reinit```
 
 ### Project 
 Includes swagger enabled by default @ http://RootURL/swagger/v1/swagger.json

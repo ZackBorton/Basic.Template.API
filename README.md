@@ -9,6 +9,10 @@ Should be 2.2.0 or higher if its not install the latest stable version
 
 ``` dotnet --version```
 
+### HTTPS
+This app requires running https locally using a self signed cert. You can do so by running the following command
+```dotnet dev-certs https --trust```
+
 ### If this is a local project use the directory containing the .template.config folder
 ```dotnet new -i FullPathToConfig```
 

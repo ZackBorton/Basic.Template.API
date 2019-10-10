@@ -5,7 +5,7 @@ Basic bootstrapped project for creating a new dotnet app using the dotnet new co
 ```git clone https://github.com/ZackBorton/Basic.Template.API.git```
 
 ### Ensure you have the correct version of dotnet installed
-Should be 2.2.0 or higher if its not install the latest stable version
+Should be 3.0.1 or higher if its not install the latest stable version
 
 ``` dotnet --version```
 
@@ -18,6 +18,12 @@ This app requires running https locally using a self signed cert. You can do so 
 
 Example 
 ```dotnet new -i "PathToYourProject/Basic.Template.API/Basic.Template.API/content/"```
+
+### You should now be able to view the new template by running
+```dotnet new```
+
+* Templates: API with swagger
+* Short Name: Basic.API.Template
 
 ### Finally create a new project using the dotnet new syntax
 ```dotnet new Basic.API.Template```

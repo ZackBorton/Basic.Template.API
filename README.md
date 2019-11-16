@@ -1,3 +1,5 @@
+![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)![Build Status](https://travis-ci.com/ZackBorton/Basic.Template.API.svg?branch=master)
+
 # Basic.Template.API
 Basic bootstrapped project for creating a new dotnet app using the dotnet new command
 

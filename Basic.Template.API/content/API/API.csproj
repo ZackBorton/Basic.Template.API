@@ -5,6 +5,11 @@
         <AspNetCoreHostingModel>inprocess</AspNetCoreHostingModel>
         <IsPackable>true</IsPackable>
         <DocumentationFile>API.xml</DocumentationFile>
+        <PackageId>BasicTemplate</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>ZackBorton</Authors>
+        <Company>BortonIndustries</Company>
+
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.App" />

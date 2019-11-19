@@ -49,4 +49,4 @@ Includes assembly scanning for dependency injection
 
 Includes enforced HSTS security
 
-Includes API versioning example
+Includes API versions example

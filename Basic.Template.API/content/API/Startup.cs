@@ -24,9 +24,7 @@ namespace API
                 
                 c.DescribeAllEnumsAsStrings();
                 c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"API.xml"));
-            });
-            services.AddMvc();
-            services.AddApiVersioning(
+            }).AddApiVersioning(
                 options =>
                 {
                     // reporting api versions will return the headers "api-supported-versions" and "api-deprecated-versions"
@@ -42,7 +40,9 @@ namespace API
                     // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
                     // can also be used to control the format of the API version in route templates
                     options.SubstituteApiVersionInUrl = true;
-                } );
+                })
+                .AddRouting()
+                .AddControllers();
             
             //StructureMap Container
             var container = new Container();
@@ -72,20 +72,19 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
-            
-            // Enforces the HTTP Strict Transport Security, which forces all communication over https
-            // It also enforces the browser to disallow a user from using untrusted or invalid certificates
-            app.UseHsts();
-            
-            app.UseSwagger();
-            
-            app.UseSwaggerUI(c =>
+            app.UseSwagger()
+                .UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
                 c.SwaggerEndpoint("/swagger/v2/swagger.json", "API V2");
             });
 
-            // app.Run(async (context) => { await context.Response.WriteAsync("Hello World!"); });
+            app.UseStaticFiles()
+                .UseHsts()
+                .UseRouting()
+                .UseEndpoints(endpoints => {
+                    endpoints.MapControllers();
+                });
         }
     }
 }

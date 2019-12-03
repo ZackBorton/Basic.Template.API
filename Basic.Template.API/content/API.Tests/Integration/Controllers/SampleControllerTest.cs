@@ -14,8 +14,8 @@ namespace API.Tests.Integration.Controllers
         }
 
         [Theory]
-        [InlineData("/api/v2/Sample?api-version=2")]
-        [InlineData("/api/v1/Sample?api-version=1")]
+        [InlineData("/api/Sample?api-version=2")]
+        [InlineData("/api/Sample?api-version=1")]
         public async Task Get_EndpointsReturnSuccess(string url)
         {
             // Arrange

@@ -1,25 +1,46 @@
 ﻿using System;
-using API.Extensions;
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using StructureMap;
 
 namespace API
 {
-    /// <summary>
-    ///     Called when the app host is built to setup the Inversion of Control container to register services that can be
-    ///     Dependency Injected
-    /// </summary>
     public class Startup
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            services.AddAPIVersions();
-            services.AddSwaggerToAPI();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "My API", Version = "v1"});
+                // Versioned API Example
+                c.SwaggerDoc("v2", new OpenApiInfo {Title = "My API", Version = "v2"});
+
+                c.DescribeAllEnumsAsStrings();
+                c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"API.xml"));
+            }).AddApiVersioning(
+                options =>
+                {
+                    // reporting api versions will return the headers "api-supported-versions" and "api-deprecated-versions"
+                    options.ReportApiVersions = true;
+                });
+            services.AddVersionedApiExplorer(
+                    options =>
+                    {
+                        // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
+                        // note: the specified format code will format the version as "'v'major[.minor][-status]"
+                        options.GroupNameFormat = "'v'VVV";
+
+                        // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
+                        // can also be used to control the format of the API version in route templates
+                        options.SubstituteApiVersionInUrl = true;
+                    })
+                .AddRouting()
+                .AddControllers();
 
             //StructureMap Container
             var container = new Container();
@@ -30,7 +51,7 @@ namespace API
                 {
                     // Registering to allow for Interfaces to be dynamically mapped
                     _.AssemblyContainingType(typeof(Startup));
-                    //List assembly's here
+                    //List assemblys here
                     _.Assembly("API");
                     _.Assembly("Logic");
                     _.Assembly("Models");
@@ -45,19 +66,22 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
-
-            // Enforces the HTTP Strict Transport Security, which forces all communication over https
-            // It also enforces the browser to disallow a user from using untrusted or invalid certificates
-            app.UseHsts();
-
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
+            if (env.IsDevelopment())
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
-                c.SwaggerEndpoint("/swagger/v2/swagger.json", "API V2");
-            });
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseSwagger()
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                    c.SwaggerEndpoint("/swagger/v2/swagger.json", "API V2");
+                });
+
+            app.UseStaticFiles()
+                .UseHsts()
+                .UseRouting()
+                .UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

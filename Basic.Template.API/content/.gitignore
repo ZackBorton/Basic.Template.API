@@ -198,3 +198,5 @@ fabric.properties
 
 # OpenCover UI analysis results
 OpenCover/
+/.idea/.idea.API/.idea/
+/.idea/.idea.API/riderModule.iml

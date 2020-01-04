@@ -1,26 +1,50 @@
 ﻿using System;
 using System.IO;
+using Logic;
+using Logic.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using StructureMap;
 
 namespace API
 {
+    /// <summary>
+    ///     Settings to be applied on startup
+    /// </summary>
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        /// <summary>
+        ///     Constructor Injection
+        /// </summary>
+        /// <param name="configuration"></param>
+        public Startup(IConfiguration configuration)
         {
+            Configuration = configuration;
+        }
+
+        /// <summary>
+        ///     Application configuration
+        /// </summary>
+        private IConfiguration Configuration { get; }
+
+        /// <summary>
+        ///     Add services
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public void ConfigureServices(IServiceCollection services)
+        {
+            // Register services that will be dependency injected
+            services.AddTransient<IExample, Example>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "My API", Version = "v1"});
                 // Versioned API Example
                 c.SwaggerDoc("v2", new OpenApiInfo {Title = "My API", Version = "v2"});
 
-                c.DescribeAllEnumsAsStrings();
                 c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"API.xml"));
             }).AddApiVersioning(
                 options =>
@@ -41,35 +65,16 @@ namespace API
                     })
                 .AddRouting()
                 .AddControllers();
-
-            //StructureMap Container
-            var container = new Container();
-
-            container.Configure(config =>
-            {
-                config.Scan(_ =>
-                {
-                    // Registering to allow for Interfaces to be dynamically mapped
-                    _.AssemblyContainingType(typeof(Startup));
-                    //List assemblys here
-                    _.Assembly("API");
-                    _.Assembly("Logic");
-                    _.Assembly("Models");
-                    _.WithDefaultConventions();
-                });
-                config.Populate(services);
-            });
-
-            return container.GetInstance<IServiceProvider>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        ///     This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseSwagger()
                 .UseSwaggerUI(c =>

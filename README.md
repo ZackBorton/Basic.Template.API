@@ -45,7 +45,7 @@ If you have issues uninstalling try running the below command
 ### Project 
 Includes swagger enabled by default @ http://RootURL/swagger/v1/swagger.json
 
-Includes assembly scanning for dependency injection
+Includes assembly scanning for dependency injection via autofac
 
 Includes enforced HSTS security
 

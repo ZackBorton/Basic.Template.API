@@ -50,3 +50,5 @@ Includes assembly scanning for dependency injection via autofac
 Includes enforced HSTS security
 
 Includes API versions example
+
+Includes renovator to autobump nuget dependencies
